@@ -1,7 +1,8 @@
 <?php
-require_once '../inc/Util.php';
+require_once '../inc/util.php';
 $article = getArticleBySlug($_GET['id']);
-
+$articleId = $article['id'] ?? 0;
+$otherArticles = getOtherArticles($articleId, 3);
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -10,15 +11,18 @@ $article = getArticleBySlug($_GET['id']);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?php echo $article['titre_h1']; ?> - Infos Iran</title>
     <meta name="description" content="<?php echo $article['meta_description']; ?>">
+    <link rel="stylesheet" href="../../assets/css/article.css">
 </head>
 <body>
-<main>
+<main class="article-layout">
     <article>
         <h1><?php echo $article['titre_h1']; ?></h1>
         
         <figure>
-            <img src="<?php echo $article['image_url']; ?>" 
+            <img src="../../<?php echo $article['image_url']; ?>" 
                  alt="<?php echo $article['image_alt']; ?>" 
+                 width="1200"
+                 height="675"
                  style="max-width:100%;">
         </figure>
 
@@ -34,6 +38,25 @@ $article = getArticleBySlug($_GET['id']);
             <p>Publié le : <?php echo $article['date_creation']; ?></p>
         </footer>
     </article>
+
+    <section class="article-related">
+        <h2>Autres articles</h2>
+        <?php if (empty($otherArticles)) { ?>
+            <p>Aucun autre article pour le moment.</p>
+        <?php } else { ?>
+            <div class="related-grid">
+                <?php foreach ($otherArticles as $related) { ?>
+                    <a class="related-card" href="../../Iran/article/<?php echo htmlspecialchars($related['url_slug'] ?? ''); ?>.html">
+                        <img src="../../<?php echo htmlspecialchars($related['image_url'] ?? ''); ?>"
+                             alt="<?php echo htmlspecialchars($related['image_alt'] ?? ''); ?>"
+                             width="480"
+                             height="320">
+                        <span><?php echo htmlspecialchars($related['titre_h1'] ?? ''); ?></span>
+                    </a>
+                <?php } ?>
+            </div>
+        <?php } ?>
+    </section>
 </main>
 </body>
 </html>

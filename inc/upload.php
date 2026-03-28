@@ -24,7 +24,7 @@ function upload($fileToUpload, $target_dir)
     }
 
     // Check file size
-    if ($_FILES[$fileToUpload]["size"] > 100000) {
+    if ($_FILES[$fileToUpload]["size"] > 300000) {
         $error_message = "File is too large.";
         $uploadOk = 0;
     }
