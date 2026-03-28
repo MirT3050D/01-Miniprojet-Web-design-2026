@@ -18,4 +18,4 @@ CREATE TABLE utilisateurs (
 );
 -- Insertion d'un utilisateur par défaut pour le BackOffice
 INSERT INTO utilisateurs (identifiant, mot_de_passe) 
-VALUES ('admin', 'admin123');
+VALUES ('admin', '$2y$10$uCy4G4mXuwXsYs7h3467f.COUKYAXfWrP1Tm35kC3AffD/CpIFKB6');
