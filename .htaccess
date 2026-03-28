@@ -1,3 +1,4 @@
+DirectoryIndex pages/index.php
 RewriteEngine On
-RewriteRule ^[_a-z0-9]*/article/([_a-z0-9]*)$ pages/controller.php?id=$1 [L]
+RewriteRule ^[_a-z0-9]*-article/([_a-z0-9]*)$ pages/body.php?id=$1 [L]
 

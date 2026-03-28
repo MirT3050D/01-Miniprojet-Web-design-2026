@@ -3,9 +3,15 @@ require_once '../inc/Util.php';
 $article = getArticleBySlug($_GET['id']);
 
 ?>
-<title><?php echo $article['titre_h1']; ?> - Infos Iran</title>
-<meta name="description" content="<?php echo $article['meta_description']; ?>">
-
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><?php echo $article['titre_h1']; ?> - Infos Iran</title>
+    <meta name="description" content="<?php echo $article['meta_description']; ?>">
+</head>
+<body>
 <main>
     <article>
         <h1><?php echo $article['titre_h1']; ?></h1>
@@ -29,3 +35,5 @@ $article = getArticleBySlug($_GET['id']);
         </footer>
     </article>
 </main>
+</body>
+</html>

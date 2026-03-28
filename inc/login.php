@@ -1,5 +1,5 @@
 <?php
-include_once 'Connection.php';
+include_once 'connection.php';
 function verifyUserNameAlreadyExist($username, $conn)
 {
     $sql = "SELECT COUNT(*) FROM utilisateurs WHERE identifiant = :username";
@@ -24,25 +24,22 @@ function login($username, $password, $conn)
             'username' => $username
         ]);
         $hash = $password_statement->fetch();
-        echo "Hash from DB: " . $hash['mot_de_passe'] . "<br></br>";
         if (!password_verify($password, $hash['mot_de_passe'])) {
-            echo 'Invalid password.';
             exit;
         }
-        $sql = "SELECT * FROM utilisateurs WHERE identifiant =:username AND mot_de_passe =:password";
+        $sql = "SELECT identifiant FROM utilisateurs WHERE identifiant =:username AND mot_de_passe =:password";
         $login_statement = $conn->prepare($sql);
         $login_statement->execute([
             'username' => $username,
             'password' => $hash['mot_de_passe']
         ]);
         $user = $login_statement->fetch();
-        echo "User: " . $user['identifiant'] . "<br></br>";
         if ($user) {
-            echo 'Login successful.';
-            header("Location: ../pages/backoffice.php");
+            return $user;
             exit;
         } else {
-            echo 'Invalid username or password.';
+            return null;       
+            exit; 
         }
     }
 }
