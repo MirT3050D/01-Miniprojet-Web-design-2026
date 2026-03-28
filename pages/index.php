@@ -1,11 +1,61 @@
+<?php
+require_once '../inc/util.php';
+$articles = getLatestArticles(3);
+?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Iran Situation Desk</title>
+	<meta name="description" content="Chronologie, analyses et briefings verifies sur la situation en Iran.">
+	<link rel="stylesheet" href="../assets/css/index.css">
 </head>
 <body>
-    
+<main>
+	<header>
+		<h1>Iran Situation Desk</h1>
+		<p>Chronologie, analyses et briefings verifies sur la situation en Iran.</p>
+		<p><a href="#articles">Voir les derniers articles</a></p>
+	</header>
+
+	<section id="articles">
+		<h2>Dernieres publications</h2>
+		<?php if (empty($articles)) { ?>
+			<p>Aucun article pour le moment.</p>
+		<?php } else { ?>
+			<?php foreach ($articles as $article) { ?>
+				<article>
+					<h3>
+						<a href="Iran/article/<?php echo htmlspecialchars($article['url_slug'] ?? ''); ?>.html">
+							<?php echo htmlspecialchars($article['titre_h1'] ?? ''); ?>
+						</a>
+					</h3>
+					<p>Date : <?php echo htmlspecialchars(date('d/m/Y', strtotime($article['date_creation'] ?? ''))); ?></p>
+					<p><?php echo htmlspecialchars($article['meta_description'] ?? ''); ?></p>
+				</article>
+			<?php } ?>
+		<?php } ?>
+	</section>
+
+	<section>
+		<h2>Ce que tu trouveras ici</h2>
+		<ul>
+			<li>Chronologies structurees.</li>
+			<li>Briefings synthetiques.</li>
+			<li>Sources verifiees.</li>
+		</ul>
+	</section>
+
+	<section>
+		<h2>Confiance et methodologie</h2>
+		<p>Donnees croisees avec sources OSINT et medias internationaux.</p>
+	</section>
+
+	<section>
+		<h2>Acceder aux archives</h2>
+		<p><a href="#">Voir les archives</a></p>
+	</section>
+</main>
 </body>
 </html>

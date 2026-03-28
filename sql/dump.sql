@@ -10,6 +10,12 @@ CREATE TABLE articles (
     date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+-- Donnees de test pour l'index
+INSERT INTO articles (titre_h1, url_slug, contenu_html, image_url, image_alt, meta_description)
+VALUES
+('Briefing du matin: deplacements et securite', 'briefing-du-matin-deplacements-et-securite', '<h2>Resume</h2><p>Point rapide sur les deplacements internes et les zones sensibles.</p><p>Sources croisees et mises a jour toutes les 4 heures.</p>', 'assets/img/uploads/briefing-matin.jpg', 'Carte des deplacements et checkpoints', 'Point rapide sur la securite et les deplacements internes.'),
+('Chronologie: la semaine en 5 dates', 'chronologie-la-semaine-en-5-dates', '<h2>Faits marquants</h2><p>Cinq dates cles pour comprendre l''evolution recente.</p><p>Contexte, acteurs, impacts.</p>', 'assets/img/uploads/chronologie-semaine.jpg', 'Frise chronologique de la semaine', 'Cinq dates cles pour comprendre la semaine en un coup d''oeil.'),
+('Sources et methodologie de verification', 'sources-et-methodologie-de-verification', '<h2>Methodologie</h2><p>Verification par recoupement OSINT et medias internationaux.</p><p>Transparence des sources et horodatage.</p>', 'assets/img/uploads/sources-methodologie.jpg', 'Table de verification et sources', 'Comment les informations sont verifiees et recoupees.');
 -- Création de la table pour le BackOffice 
 CREATE TABLE utilisateurs (
     id INT AUTO_INCREMENT PRIMARY KEY,
