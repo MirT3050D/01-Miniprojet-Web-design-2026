@@ -25,9 +25,16 @@ if(!isset($_SESSION['user'])) {
 			</div>
 		</div>
 
-		<form class="editor-form" action="../inc/index_back_office_controller.php" method="post" enctype="multipart/form-data">
+		<div class="backoffice-toolbar">
+			<a href="articles_list.php" class="btn btn-secondary">📋 Voir tous les articles</a>
+		</div>
+
+		<form class="editor-form" action="../inc/article_controller.php?action=create" method="post" enctype="multipart/form-data">
 			<?php if (isset($_GET['upload_error'])) { ?>
 				<p class="upload-error"><?php echo htmlspecialchars($_GET['upload_error']); ?></p>
+			<?php } ?>
+			<?php if (isset($_GET['error'])) { ?>
+				<p class="upload-error">✗ Une erreur est survenue</p>
 			<?php } ?>
 			<div class="form-grid">
 				<div class="field">
@@ -64,8 +71,8 @@ if(!isset($_SESSION['user'])) {
 			</div>
 
 			<div class="actions">
-				<button type="submit">Publish article</button>
-				<p class="note">Content is stored as HTML and rendered in the public article page.</p>
+				<button type="submit">Créer l'article</button>
+				<p class="note">Le contenu sera sauvegardé en HTML et affiché sur la page publique.</p>
 			</div>
 		</form>
 	</section>
