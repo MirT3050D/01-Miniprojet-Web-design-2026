@@ -14,7 +14,7 @@
 <main class="backoffice-login">
     <section class="login-card">
         <div class="brand">
-            <span class="brand-mark">IA</span>
+            <span class="brand-mark logo-newsroom">SD</span>
             <div class="brand-text">
                 <h1>Iran Situation Desk</h1>
                 <p>Backoffice access</p>

@@ -14,6 +14,16 @@ $otherArticles = getOtherArticles($articleId, 3);
     <link rel="stylesheet" href="../../assets/css/article.css">
 </head>
 <body>
+<header class="site-chrome">
+    <div class="site-chrome-inner">
+        <a class="site-brand" href="../../pages/index.php" aria-label="Retour a l'accueil">
+            <span class="brand-mark logo-newsroom" aria-hidden="true">SD</span>
+            <span class="site-brand-text">Iran Situation Desk</span>
+        </a>
+        <p class="site-rubric"><span>Rubrique</span> Situation Iran</p>
+        <a class="site-home-link" href="../../pages/index.php">Accueil</a>
+    </div>
+</header>
 <main class="article-layout">
     <article>
         <h1><?php echo $article['titre_h1']; ?></h1>
