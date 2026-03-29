@@ -1,8 +1,12 @@
+// Form elements
 const titleInput = document.querySelector("#title");
 const slugInput = document.querySelector("#slug");
 const metaInput = document.querySelector("#meta_description");
 const metaCount = document.querySelector("#meta_count");
 
+/**
+ * Convert text to URL slug format
+ */
 const slugify = (value) => {
     if (!value) {
         return "";
@@ -16,6 +20,9 @@ const slugify = (value) => {
         .replace(/^-+|-+$/g, "");
 };
 
+/**
+ * Update meta description character count
+ */
 const updateMetaCount = () => {
     if (!metaInput || !metaCount) {
         return;
@@ -24,6 +31,9 @@ const updateMetaCount = () => {
     metaCount.textContent = String(metaInput.value.length);
 };
 
+/**
+ * Setup slug auto-generation
+ */
 if (slugInput) {
     slugInput.dataset.auto = "true";
     slugInput.addEventListener("input", () => {
@@ -31,6 +41,9 @@ if (slugInput) {
     });
 }
 
+/**
+ * Auto-generate slug from title
+ */
 if (titleInput && slugInput) {
     titleInput.addEventListener("input", () => {
         if (slugInput.dataset.auto === "false") {
@@ -41,11 +54,17 @@ if (titleInput && slugInput) {
     });
 }
 
+/**
+ * Update meta count on input
+ */
 if (metaInput) {
     metaInput.addEventListener("input", updateMetaCount);
     updateMetaCount();
 }
 
+/**
+ * Initialize TinyMCE editor
+ */
 if (typeof tinymce !== "undefined") {
     tinymce.init({
         selector: "#content",

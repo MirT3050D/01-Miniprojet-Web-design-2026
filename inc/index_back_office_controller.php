@@ -5,7 +5,7 @@ if (!isset($_SESSION['user'])) {
 	exit;
 }
 
-require_once 'Connection.php';
+require_once 'connection.php';
 require_once 'upload.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
