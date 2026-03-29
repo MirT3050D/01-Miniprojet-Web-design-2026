@@ -1,0 +1,171 @@
+Document technique - Explication des pages
+Projet: Mini-projet Web design 2026
+Date: 29/03/2026
+
+==================================================
+1) FRONTOFFICE (partie publique)
+==================================================
+
+Page: pages/index.php
+Role:
+- Page d'accueil publique du site "Iran Situation Desk".
+- Affiche les 3 derniers articles publies.
+- Propose un champ de recherche vers la page de resultats.
+
+Traitement technique:
+- Appelle getLatestArticles(3) depuis inc/util.php.
+- Genere des liens SEO vers les articles via leur slug.
+- Affiche titre, date de publication et meta description de chaque article.
+
+Ce que l'utilisateur voit:
+- Le branding du site.
+- Un resume editorial (chronologie, analyses, briefings).
+- Les dernieres publications et l'acces a la recherche.
+
+--------------------------------------------------
+
+Page: pages/search_results.php
+Role:
+- Affiche les resultats de recherche d'articles.
+- Permet de trier, filtrer par periode et paginer les resultats.
+
+Traitement technique:
+- Lit les parametres GET: q, sort, period, date_from, date_to, page.
+- Appelle searchArticles(...) dans inc/util.php.
+- Le moteur gere:
+	* recherche texte sur titre, meta description et contenu HTML,
+	* tri (date asc/desc, titre asc/desc),
+	* filtre date (7 jours, 30 jours, 12 mois, personnalise),
+	* pagination (6 articles par page).
+
+Ce que l'utilisateur voit:
+- Nombre total de resultats.
+- Liste des articles trouves.
+- Navigation de pagination page par page.
+
+--------------------------------------------------
+
+Page: pages/body.php
+Role:
+- Template de la page article publique (detail d'un article).
+- Affiche le contenu complet d'un article et des suggestions d'autres articles.
+
+Traitement technique:
+- Recupere l'article via getArticleBySlug($_GET['id']).
+- Recupere 3 articles lies via getOtherArticles(...).
+- Rend le contenu HTML brut stocke en base (contenu_html).
+
+Ce que l'utilisateur voit:
+- Titre H1 de l'article, image, contenu detaille.
+- Date de publication.
+- Bloc "Autres articles" pour la navigation interne.
+
+==================================================
+2) BACKOFFICE (administration)
+==================================================
+
+Page: pages/login.php
+Role:
+- Ecran de connexion au backoffice.
+
+Traitement technique:
+- Formulaire POST vers inc/login_controller.php.
+- Affiche les erreurs de connexion via le parametre GET error.
+
+Ce que l'utilisateur voit:
+- Formulaire identifiant/mot de passe.
+- Message d'erreur si acces refuse ou session absente.
+
+--------------------------------------------------
+
+Page: pages/index_back_office.php
+Role:
+- Page de creation d'un nouvel article.
+- Point d'entree principal de redaction backoffice.
+
+Traitement technique:
+- Protegee par session (obligation d'etre connecte).
+- Formulaire POST vers inc/article_controller.php?action=create.
+- Integre TinyMCE pour l'edition riche du contenu HTML.
+- Gere upload image + meta description + slug.
+
+Ce que l'editeur voit:
+- Formulaire de creation complet (titre, slug, image, contenu).
+- Checklist de publication.
+
+--------------------------------------------------
+
+Page: pages/articles_list.php
+Role:
+- Liste des articles existants (hors articles supprimes logiquement).
+- Tableau de pilotage du contenu.
+
+Traitement technique:
+- Requete SQL sur la table articles avec exclusion du status "deleted".
+- Affiche les messages de succes/erreur apres creation, update ou suppression.
+- Actions disponibles:
+	* voir details,
+	* editer,
+	* supprimer (soft delete).
+
+Ce que l'editeur voit:
+- Tableau avec titre, slug, image, date, boutons d'action.
+- Statistiques simples (nombre total d'articles).
+
+--------------------------------------------------
+
+Page: pages/article_details.php
+Role:
+- Affichage detaille d'un article cote backoffice.
+- Ecran de controle avant edition ou suppression.
+
+Traitement technique:
+- Protegee par session.
+- Charge l'article par son id, avec verification d'existence.
+- Propose les actions editer/supprimer depuis la meme page.
+
+Ce que l'editeur voit:
+- Rendu complet de l'article (proche frontoffice).
+- Metadonnees techniques: id, slug, date, presence image, taille contenu.
+
+--------------------------------------------------
+
+Page: pages/edit_article.php
+Role:
+- Edition d'un article existant.
+
+Traitement technique:
+- Protegee par session.
+- Charge les donnees de l'article par id.
+- Formulaire POST vers inc/article_controller.php?action=update.
+- Permet de remplacer l'image, modifier slug, metadata et contenu HTML.
+- Integre TinyMCE pour edition du contenu.
+
+Ce que l'editeur voit:
+- Formulaire pre-rempli avec les donnees existantes.
+- Informations de suivi (id et date de creation).
+
+==================================================
+3) Flux global du projet
+==================================================
+
+Frontoffice:
+index.php -> recherche (search_results.php) -> lecture detail article (body.php)
+
+Backoffice:
+login.php -> index_back_office.php (creation) -> articles_list.php -> article_details.php / edit_article.php
+
+Controleurs associes:
+- inc/login_controller.php: authentification et creation de session.
+- inc/article_controller.php: create/update/delete des articles.
+- inc/upload.php: validation et stockage des images.
+- inc/util.php: fonctions de lecture/recherche pour le front.
+
+==================================================
+4) Note technique importante
+==================================================
+
+La suppression est une suppression logique (soft delete):
+- l'article n'est pas retire physiquement de la base,
+- son statut passe a "deleted",
+- il n'apparait plus dans les pages publiques et dans les listes actives.

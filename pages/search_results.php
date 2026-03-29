@@ -52,28 +52,37 @@ $queryParams = [
             </div>
 
             <div class="filter-row">
-                <label for="sort">Tri</label>
-                <select id="sort" name="sort">
-                    <option value="date_desc" <?php echo $sort === 'date_desc' ? 'selected' : ''; ?>>Date - Plus recent</option>
-                    <option value="date_asc" <?php echo $sort === 'date_asc' ? 'selected' : ''; ?>>Date - Plus ancien</option>
-                    <option value="title_asc" <?php echo $sort === 'title_asc' ? 'selected' : ''; ?>>Titre - A a Z</option>
-                    <option value="title_desc" <?php echo $sort === 'title_desc' ? 'selected' : ''; ?>>Titre - Z a A</option>
-                </select>
+                <div class="filter-group">
+                    <label for="sort">Tri</label>
+                    <select id="sort" name="sort">
+                        <option value="date_desc" <?php echo $sort === 'date_desc' ? 'selected' : ''; ?>>Date - Plus recent</option>
+                        <option value="date_asc" <?php echo $sort === 'date_asc' ? 'selected' : ''; ?>>Date - Plus ancien</option>
+                        <option value="title_asc" <?php echo $sort === 'title_asc' ? 'selected' : ''; ?>>Titre - A a Z</option>
+                        <option value="title_desc" <?php echo $sort === 'title_desc' ? 'selected' : ''; ?>>Titre - Z a A</option>
+                    </select>
+                </div>
 
-                <label for="period">Periode</label>
-                <select id="period" name="period">
-                    <option value="all" <?php echo $period === 'all' ? 'selected' : ''; ?>>Toutes dates</option>
-                    <option value="last_7" <?php echo $period === 'last_7' ? 'selected' : ''; ?>>7 derniers jours</option>
-                    <option value="last_30" <?php echo $period === 'last_30' ? 'selected' : ''; ?>>30 derniers jours</option>
-                    <option value="last_365" <?php echo $period === 'last_365' ? 'selected' : ''; ?>>12 derniers mois</option>
-                    <option value="custom" <?php echo $period === 'custom' ? 'selected' : ''; ?>>Intervalle personnalise</option>
-                </select>
+                <div class="filter-group">
+                    <label for="period">Periode</label>
+                    <select id="period" name="period">
+                        <option value="all" <?php echo $period === 'all' ? 'selected' : ''; ?>>Toutes dates</option>
+                        <option value="last_7" <?php echo $period === 'last_7' ? 'selected' : ''; ?>>7 derniers jours</option>
+                        <option value="last_30" <?php echo $period === 'last_30' ? 'selected' : ''; ?>>30 derniers jours</option>
+                        <option value="last_365" <?php echo $period === 'last_365' ? 'selected' : ''; ?>>12 derniers mois</option>
+                        <option value="custom" <?php echo $period === 'custom' ? 'selected' : ''; ?>>Intervalle personnalise</option>
+                    </select>
+                </div>
 
-                <label for="date_from">Du</label>
-                <input id="date_from" type="date" name="date_from" value="<?php echo htmlspecialchars($dateFrom); ?>">
-
-                <label for="date_to">Au</label>
-                <input id="date_to" type="date" name="date_to" value="<?php echo htmlspecialchars($dateTo); ?>">
+                <div class="filter-group filter-dates">
+                    <div class="date-input">
+                        <label for="date_from">Du</label>
+                        <input id="date_from" type="date" name="date_from" value="<?php echo htmlspecialchars($dateFrom); ?>">
+                    </div>
+                    <div class="date-input">
+                        <label for="date_to">Au</label>
+                        <input id="date_to" type="date" name="date_to" value="<?php echo htmlspecialchars($dateTo); ?>">
+                    </div>
+                </div>
 
                 <button type="submit" class="button-secondary">Appliquer</button>
             </div>
