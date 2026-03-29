@@ -40,7 +40,7 @@ $error = $_GET['error'] ?? '';
 <main class="backoffice-page">
 	<section class="editor-card">
 		<div class="brand">
-			<span class="brand-mark">IA</span>
+			<span class="brand-mark logo-newsroom">SD</span>
 			<div class="brand-text">
 				<h1>Iran Situation Desk</h1>
 				<p>Éditer article</p>

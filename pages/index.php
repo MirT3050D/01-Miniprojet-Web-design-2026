@@ -14,6 +14,10 @@ $articles = getLatestArticles(3);
 <body>
 <main>
 	<header>
+		<div class="brand front-brand">
+			<span class="brand-mark logo-newsroom" aria-hidden="true">SD</span>
+			<p class="brand-kicker">Signal Desk</p>
+		</div>
 		<h1>Iran Situation Desk</h1>
 		<p>Chronologie, analyses et briefings verifies sur la situation en Iran.</p>
 		<p><a href="#articles">Voir les derniers articles</a></p>
@@ -27,7 +31,7 @@ $articles = getLatestArticles(3);
 			<?php foreach ($articles as $article) { ?>
 				<article>
 					<h3>
-						<a href="Iran/article/<?php echo htmlspecialchars($article['url_slug'] ?? ''); ?>.html">
+						<a href="../../Iran/article/<?php echo htmlspecialchars($article['url_slug'] ?? ''); ?>.html">
 							<?php echo htmlspecialchars($article['titre_h1'] ?? ''); ?>
 						</a>
 					</h3>
