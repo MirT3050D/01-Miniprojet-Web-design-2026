@@ -21,6 +21,11 @@ $otherArticles = getOtherArticles($articleId, 3);
             <span class="site-brand-text">Iran Situation Desk</span>
         </a>
         <p class="site-rubric"><span>Rubrique</span> Situation Iran</p>
+        <form class="chrome-search" method="get" action="../../pages/search_results.php">
+            <label for="article-search" class="sr-only">Rechercher</label>
+            <input id="article-search" type="search" name="q" placeholder="Rechercher..." required>
+            <button type="submit">OK</button>
+        </form>
         <a class="site-home-link" href="../../pages/index.php">Accueil</a>
     </div>
 </header>

@@ -20,6 +20,13 @@ $articles = getLatestArticles(3);
 		</div>
 		<h1>Iran Situation Desk</h1>
 		<p>Chronologie, analyses et briefings verifies sur la situation en Iran.</p>
+		<form class="search-form" method="get" action="search_results.php">
+			<label for="home-search" class="search-label">Rechercher un article</label>
+			<div class="search-row">
+				<input id="home-search" type="search" name="q" placeholder="Mot-cle, sujet, lieu..." required>
+				<button type="submit">Rechercher</button>
+			</div>
+		</form>
 		<p><a href="#articles">Voir les derniers articles</a></p>
 	</header>
 

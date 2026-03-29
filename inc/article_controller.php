@@ -8,6 +8,9 @@ if (!isset($_SESSION['user'])) {
 require_once 'connection.php';
 require_once 'upload.php';
 
+const ARTICLE_STATUS_PUBLISHED = 1;
+const ARTICLE_STATUS_DELETED = 2;
+
 $action = $_GET['action'] ?? '';
 $conn = getConnection();
 
@@ -73,8 +76,9 @@ if ($action === 'update' && $_SERVER['REQUEST_METHOD'] === 'POST') {
 	}
 
 	// Get current article to preserve image if not changed
-	$stmt = $conn->prepare('SELECT image_url FROM articles WHERE id = :id');
+	$stmt = $conn->prepare('SELECT image_url FROM articles WHERE id = :id AND article_status_id <> :deleted_status');
 	$stmt->bindParam(':id', $article_id);
+	$stmt->bindValue(':deleted_status', ARTICLE_STATUS_DELETED, PDO::PARAM_INT);
 	$stmt->execute();
 	$article = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -131,7 +135,8 @@ if ($action === 'delete' && $_SERVER['REQUEST_METHOD'] === 'POST') {
 	}
 
 	try {
-		$stmt = $conn->prepare('DELETE FROM articles WHERE id = :id');
+		$stmt = $conn->prepare('UPDATE articles SET article_status_id = :deleted_status WHERE id = :id AND article_status_id <> :deleted_status');
+		$stmt->bindValue(':deleted_status', ARTICLE_STATUS_DELETED, PDO::PARAM_INT);
 		$stmt->bindParam(':id', $article_id);
 		$stmt->execute();
 

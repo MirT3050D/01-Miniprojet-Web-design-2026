@@ -7,8 +7,11 @@ if (!isset($_SESSION['user'])) {
 
 require_once '../inc/connection.php';
 
+$deletedStatus = 2;
+
 $conn = getConnection();
-$stmt = $conn->prepare('SELECT id, titre_h1, url_slug, image_url, date_creation FROM articles ORDER BY date_creation DESC');
+$stmt = $conn->prepare('SELECT id, titre_h1, url_slug, image_url, date_creation FROM articles WHERE article_status_id <> :deleted_status ORDER BY date_creation DESC');
+$stmt->bindValue(':deleted_status', $deletedStatus, PDO::PARAM_INT);
 $stmt->execute();
 $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

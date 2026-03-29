@@ -89,6 +89,50 @@ body {
     color: #ffffff;
 }
 
+.chrome-search {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.chrome-search input {
+    height: 34px;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.12);
+    color: #f5f7fa;
+    padding: 0 10px;
+    min-width: 180px;
+}
+
+.chrome-search input::placeholder {
+    color: rgba(245, 247, 250, 0.7);
+}
+
+.chrome-search button {
+    height: 34px;
+    border: 0;
+    border-radius: 10px;
+    background: #c4482b;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    padding: 0 12px;
+    cursor: pointer;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
 .brand-mark {
     width: 42px;
     height: 42px;
@@ -302,6 +346,10 @@ footer {
         font-size: 12px;
     }
 
+    .chrome-search input {
+        min-width: 140px;
+    }
+
     .related-grid {
         grid-template-columns: 1fr;
     }
@@ -317,6 +365,15 @@ footer {
 
     .site-rubric {
         display: none;
+    }
+
+    .chrome-search {
+        margin-left: auto;
+    }
+
+    .chrome-search input {
+        min-width: 120px;
+        width: 36vw;
     }
 
     .site-brand-text {
