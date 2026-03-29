@@ -7,6 +7,8 @@ if (!isset($_SESSION['user'])) {
 
 require_once '../inc/connection.php';
 
+$deletedStatus = 2;
+
 $article_id = intval($_GET['id'] ?? 0);
 if ($article_id === 0) {
 	header("Location: articles_list.php?error=invalid");
@@ -14,8 +16,9 @@ if ($article_id === 0) {
 }
 
 $conn = getConnection();
-$stmt = $conn->prepare('SELECT * FROM articles WHERE id = :id');
+$stmt = $conn->prepare('SELECT * FROM articles WHERE id = :id AND article_status_id <> :deleted_status');
 $stmt->bindParam(':id', $article_id);
+$stmt->bindValue(':deleted_status', $deletedStatus, PDO::PARAM_INT);
 $stmt->execute();
 $article = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -69,7 +72,7 @@ $error = $_GET['error'] ?? '';
 			<a href="edit_article.php?id=<?php echo $article['id']; ?>" class="btn btn-primary">✎ Éditer cet article</a>
 			<form method="post" action="../inc/article_controller.php?action=delete" style="display: inline;">
 				<input type="hidden" name="article_id" value="<?php echo $article['id']; ?>">
-				<button type="submit" class="btn btn-danger" onclick="return confirm('Êtes-vous absolument sûr de vouloir supprimer cet article ? Cette action est irréversible.');">✕ Supprimer définitivement</button>
+				<button type="submit" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet article ?');">✕ Supprimer</button>
 			</form>
 		</div>
 	</section>

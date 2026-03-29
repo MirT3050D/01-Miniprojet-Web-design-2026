@@ -7,6 +7,8 @@ if (!isset($_SESSION['user'])) {
 
 require_once '../inc/connection.php';
 
+$deletedStatus = 2;
+
 $article_id = intval($_GET['id'] ?? 0);
 if ($article_id === 0) {
 	header("Location: articles_list.php?error=invalid");
@@ -14,8 +16,9 @@ if ($article_id === 0) {
 }
 
 $conn = getConnection();
-$stmt = $conn->prepare('SELECT * FROM articles WHERE id = :id');
+$stmt = $conn->prepare('SELECT * FROM articles WHERE id = :id AND article_status_id <> :deleted_status');
 $stmt->bindParam(':id', $article_id);
+$stmt->bindValue(':deleted_status', $deletedStatus, PDO::PARAM_INT);
 $stmt->execute();
 $article = $stmt->fetch(PDO::FETCH_ASSOC);
 
