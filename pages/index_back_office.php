@@ -33,8 +33,17 @@ if(!isset($_SESSION['user'])) {
 			<?php if (isset($_GET['upload_error'])) { ?>
 				<p class="upload-error"><?php echo htmlspecialchars($_GET['upload_error']); ?></p>
 			<?php } ?>
-			<?php if (isset($_GET['error'])) { ?>
-				<p class="upload-error">✗ Une erreur est survenue</p>
+			<?php
+			$error = $_GET['error'] ?? '';
+			$errorMessages = [
+				'empty_fields' => '✗ Veuillez remplir le titre et le slug.',
+				'slug_exists' => '✗ Le slug existe deja. Choisissez-en un autre.',
+				'db_error' => '✗ Erreur de base de donnees. Reessayez plus tard.'
+			];
+			$resolvedError = $error !== '' ? ($errorMessages[$error] ?? '✗ Une erreur est survenue.') : '';
+			?>
+			<?php if ($resolvedError !== '') { ?>
+				<p class="upload-error"><?php echo htmlspecialchars($resolvedError); ?></p>
 			<?php } ?>
 			<div class="form-grid">
 				<div class="field">

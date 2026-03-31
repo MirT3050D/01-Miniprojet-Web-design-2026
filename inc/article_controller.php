@@ -56,7 +56,8 @@ if ($action === 'create' && $_SERVER['REQUEST_METHOD'] === 'POST') {
 		header('Location: ../pages/articles_list.php?msg=created');
 		exit;
 	} catch (PDOException $e) {
-		header('Location: ../pages/index_back_office.php?error=slug_exists');
+		$errorKey = $e->getCode() === '23000' ? 'slug_exists' : 'db_error';
+		header('Location: ../pages/index_back_office.php?error=' . $errorKey);
 		exit;
 	}
 }
