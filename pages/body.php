@@ -3,6 +3,25 @@ require_once '../inc/util.php';
 $article = getArticleBySlug($_GET['id']);
 $articleId = $article['id'] ?? 0;
 $otherArticles = getOtherArticles($articleId, 3);
+
+function get_image_dimensions($image_url) {
+    if (!$image_url) {
+        return null;
+    }
+
+    $root_dir = dirname(__DIR__);
+    $image_path = $root_dir . $image_url;
+    if (!file_exists($image_path)) {
+        return null;
+    }
+
+    $size = @getimagesize($image_path);
+    if (!$size) {
+        return null;
+    }
+
+    return ['width' => $size[0], 'height' => $size[1]];
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -34,11 +53,17 @@ $otherArticles = getOtherArticles($articleId, 3);
         <h1><?php echo $article['titre_h1']; ?></h1>
         
         <figure>
-            <img src="../../<?php echo $article['image_url']; ?>" 
-                 alt="<?php echo $article['image_alt']; ?>" 
-                 width="1200"
-                 height="675"
-                 style="max-width:100%;">
+            <?php
+                $hero_url = $article['image_url'] ?? '';
+                $hero_dims = get_image_dimensions($hero_url);
+            ?>
+            <img
+                src="../../<?php echo $hero_url; ?>"
+                alt="<?php echo $article['image_alt']; ?>"
+                <?php if ($hero_dims) { ?>width="<?php echo $hero_dims['width']; ?>" height="<?php echo $hero_dims['height']; ?>"<?php } ?>
+                fetchpriority="high"
+                decoding="async"
+                style="max-width:100%;">
         </figure>
 
         <div class="article-content">
@@ -62,10 +87,16 @@ $otherArticles = getOtherArticles($articleId, 3);
             <div class="related-grid">
                 <?php foreach ($otherArticles as $related) { ?>
                     <a class="related-card" href="../../Iran/article/<?php echo htmlspecialchars($related['url_slug'] ?? ''); ?>.html">
-                        <img src="../../<?php echo htmlspecialchars($related['image_url'] ?? ''); ?>"
-                             alt="<?php echo htmlspecialchars($related['image_alt'] ?? ''); ?>"
-                             width="480"
-                             height="320">
+                        <?php
+                            $related_url = $related['image_url'] ?? '';
+                            $related_dims = get_image_dimensions($related_url);
+                        ?>
+                        <img
+                            src="../../<?php echo htmlspecialchars($related_url); ?>"
+                            alt="<?php echo htmlspecialchars($related['image_alt'] ?? ''); ?>"
+                            <?php if ($related_dims) { ?>width="<?php echo $related_dims['width']; ?>" height="<?php echo $related_dims['height']; ?>"<?php } ?>
+                            loading="lazy"
+                            decoding="async">
                         <span><?php echo htmlspecialchars($related['titre_h1'] ?? ''); ?></span>
                     </a>
                 <?php } ?>

@@ -1,5 +1,5 @@
 <?php
-function compress_and_save_image($tmp_path, $target_path, $max_width = 1200, $jpeg_quality = 70)
+function compress_and_save_image($tmp_path, $target_path, $max_width = 900, $jpeg_quality = 70)
 {
     $info = getimagesize($tmp_path);
     if ($info === false) {
@@ -114,6 +114,6 @@ function upload($fileToUpload, $target_dir)
         return $error_message;
         // if everything is ok, try to upload file
     } else {
-        return compress_and_save_image($_FILES[$fileToUpload]["tmp_name"], $target_file, 1200, 70);
+        return compress_and_save_image($_FILES[$fileToUpload]["tmp_name"], $target_file, 900, 70);
     }
 }
