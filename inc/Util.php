@@ -42,11 +42,20 @@ function getOtherArticles($currentId, $limit = 3)
 
 function normalizeDateValue($value)
 {
-    if ($value === '' || !preg_match('/^\d{4}-\d{2}-\d{2}$/', $value)) {
+    if ($value === '') {
         return '';
     }
 
-    return $value;
+    if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $value)) {
+        return $value;
+    }
+
+    if (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $value)) {
+        $parsed = DateTimeImmutable::createFromFormat('d/m/Y', $value);
+        return $parsed ? $parsed->format('Y-m-d') : '';
+    }
+
+    return '';
 }
 
 function resolveDateRangeFromPeriod($period, $dateFrom, $dateTo)
@@ -54,6 +63,8 @@ function resolveDateRangeFromPeriod($period, $dateFrom, $dateTo)
     $today = new DateTimeImmutable('today');
     $allowedPeriods = ['all', 'last_7', 'last_30', 'last_365', 'custom'];
     $selectedPeriod = in_array($period, $allowedPeriods, true) ? $period : 'all';
+    $normalizedFrom = normalizeDateValue($dateFrom);
+    $normalizedTo = normalizeDateValue($dateTo);
 
     if ($selectedPeriod === 'last_7') {
         return [
@@ -77,10 +88,11 @@ function resolveDateRangeFromPeriod($period, $dateFrom, $dateTo)
     }
 
     if ($selectedPeriod === 'custom') {
-        return [
-            normalizeDateValue($dateFrom),
-            normalizeDateValue($dateTo)
-        ];
+        return [$normalizedFrom, $normalizedTo];
+    }
+
+    if ($selectedPeriod === 'all' && ($normalizedFrom !== '' || $normalizedTo !== '')) {
+        return [$normalizedFrom, $normalizedTo];
     }
 
     return ['', ''];
