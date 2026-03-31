@@ -1,5 +1,5 @@
 <?php
-function compress_and_save_image($tmp_path, $target_path, $max_width = 900, $jpeg_quality = 70)
+function compress_and_save_image($tmp_path, $target_path, $max_width = 960, $jpeg_quality = 70)
 {
     $info = getimagesize($tmp_path);
     if ($info === false) {
@@ -67,6 +67,25 @@ function compress_and_save_image($tmp_path, $target_path, $max_width = 900, $jpe
     return '';
 }
 
+function save_responsive_variants($tmp_path, $target_path, $widths, $jpeg_quality = 70)
+{
+    $info = pathinfo($target_path);
+    $dirname = $info['dirname'] ?? '';
+    $filename = $info['filename'] ?? '';
+    $extension = $info['extension'] ?? '';
+
+    foreach ($widths as $width) {
+        $suffix = '-' . $width;
+        $variant_path = $dirname . '/' . $filename . $suffix . '.' . $extension;
+        $error = compress_and_save_image($tmp_path, $variant_path, $width, $jpeg_quality);
+        if ($error !== '') {
+            return $error;
+        }
+    }
+
+    return '';
+}
+
 function upload($fileToUpload, $target_dir)
 {
     $error_message = '';
@@ -114,6 +133,12 @@ function upload($fileToUpload, $target_dir)
         return $error_message;
         // if everything is ok, try to upload file
     } else {
-        return compress_and_save_image($_FILES[$fileToUpload]["tmp_name"], $target_file, 900, 70);
+        $tmp_path = $_FILES[$fileToUpload]["tmp_name"];
+        $error = compress_and_save_image($tmp_path, $target_file, 960, 70);
+        if ($error !== '') {
+            return $error;
+        }
+
+        return save_responsive_variants($tmp_path, $target_file, [480, 960], 70);
     }
 }

@@ -4,6 +4,45 @@ $article = getArticleBySlug($_GET['id']);
 $articleId = $article['id'] ?? 0;
 $otherArticles = getOtherArticles($articleId, 3);
 
+function build_srcset($image_url, $widths) {
+    if (!$image_url) {
+        return '';
+    }
+
+    $root_dir = dirname(__DIR__);
+    $info = pathinfo($image_url);
+    $dirname = $info['dirname'] ?? '';
+    $filename = $info['filename'] ?? '';
+    $extension = strtolower($info['extension'] ?? '');
+    $extensions = [$extension];
+    if ($extension === 'jpg') {
+        $extensions[] = 'jpeg';
+    } elseif ($extension === 'jpeg') {
+        $extensions[] = 'jpg';
+    }
+
+    if ($dirname === '.' || $dirname === '') {
+        $dirname = '';
+    }
+
+    $candidates = [];
+    foreach ($widths as $width) {
+        foreach ($extensions as $ext) {
+            if ($ext === '') {
+                continue;
+            }
+            $candidate = $dirname . '/' . $filename . '-' . $width . '.' . $ext;
+            $candidate_path = $root_dir . $candidate;
+            if (file_exists($candidate_path)) {
+                $candidates[] = '../../' . ltrim($candidate, '/') . ' ' . $width . 'w';
+                break;
+            }
+        }
+    }
+
+    return implode(', ', $candidates);
+}
+
 function get_image_dimensions($image_url) {
     if (!$image_url) {
         return null;
@@ -56,9 +95,12 @@ function get_image_dimensions($image_url) {
             <?php
                 $hero_url = $article['image_url'] ?? '';
                 $hero_dims = get_image_dimensions($hero_url);
+                $hero_srcset = build_srcset($hero_url, [480, 960]);
             ?>
             <img
                 src="../../<?php echo $hero_url; ?>"
+                <?php if ($hero_srcset !== '') { ?>srcset="<?php echo $hero_srcset; ?>"<?php } ?>
+                sizes="(max-width: 720px) 92vw, 960px"
                 alt="<?php echo $article['image_alt']; ?>"
                 <?php if ($hero_dims) { ?>width="<?php echo $hero_dims['width']; ?>" height="<?php echo $hero_dims['height']; ?>"<?php } ?>
                 fetchpriority="high"
@@ -90,9 +132,12 @@ function get_image_dimensions($image_url) {
                         <?php
                             $related_url = $related['image_url'] ?? '';
                             $related_dims = get_image_dimensions($related_url);
+                            $related_srcset = build_srcset($related_url, [480, 960]);
                         ?>
                         <img
                             src="../../<?php echo htmlspecialchars($related_url); ?>"
+                            <?php if ($related_srcset !== '') { ?>srcset="<?php echo $related_srcset; ?>"<?php } ?>
+                            sizes="(max-width: 900px) 90vw, 320px"
                             alt="<?php echo htmlspecialchars($related['image_alt'] ?? ''); ?>"
                             <?php if ($related_dims) { ?>width="<?php echo $related_dims['width']; ?>" height="<?php echo $related_dims['height']; ?>"<?php } ?>
                             loading="lazy"
